@@ -2,11 +2,13 @@ const mongoose = require("mongoose");
 const childSchema = require("./childModel");
 const { Schema } = mongoose;
 
-
-const SupplierSchema = new Schema({
-  supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Suppliers' },
-  name: { type: String },
-}, { _id: false });
+const SupplierSchema = new Schema(
+  {
+    supplier_id: { type: mongoose.Schema.Types.ObjectId, ref: "Suppliers" },
+    name: { type: String },
+  },
+  { _id: false }
+);
 
 // Define ProductSchema
 const productSchema = new Schema(
@@ -18,7 +20,7 @@ const productSchema = new Schema(
     supplier: { type: SupplierSchema, required: false },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 const Product = mongoose.model("Product", productSchema);
