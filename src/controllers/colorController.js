@@ -3,6 +3,7 @@ const ColorModular = require("../config/models/colorModel");
 module.exports.createColorModular = async (req, res) => {
   try {
     const { modularType, subModules } = req.body;
+    console.log(modularType , subModules);
 
     const existingEntry = await ColorModular.findOne({ modularType });
     if (existingEntry) {

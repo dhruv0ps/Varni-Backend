@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const AccessoriesSchema = new mongoose.Schema({
   modularType: {
-    type: Number,
+    type: String,
     required: true,
     unique: true,
   },
@@ -12,6 +12,9 @@ const AccessoriesSchema = new mongoose.Schema({
       price: { type: Number, required: true },
     },
   ],
+},
+{
+  timestamps: true,
 });
 
 module.exports = mongoose.model("Accessories", AccessoriesSchema);
