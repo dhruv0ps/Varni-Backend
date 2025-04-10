@@ -3,21 +3,50 @@ const ColorModular = require("../config/models/colorModel");
 module.exports.createColorModular = async (req, res) => {
   try {
     const { modularType, subModules } = req.body;
-    console.log(modularType , subModules);
 
     const existingEntry = await ColorModular.findOne({ modularType });
+
     if (existingEntry) {
-      return res
-        .status(400)
-        .json({ status: false, data: {}, err: "ModularType already exists" });
+      const isDuplicate = existingEntry.subModules.some(
+        (mod) => mod.name.toLowerCase() === subModules.name.toLowerCase()
+      );
+
+      if (isDuplicate) {
+        return res.status(400).json({
+          status: false,
+          data: {},
+          err: `SubModule with name "${subModules.name}" already exists under "${modularType}"`,
+        });
+      }
+
+      existingEntry.subModules.push(subModules);
+      await existingEntry.save();
+
+      return res.status(200).json({
+        status: true,
+        data: existingEntry,
+        err: {},
+      });
     }
 
-    const newColorModular = new ColorModular({ modularType, subModules });
+    const newColorModular = new ColorModular({
+      modularType,
+      subModules: [subModules], 
+    });
+
     await newColorModular.save();
 
-    res.status(201).json({ status: true, data: newColorModular, err: {} });
+    res.status(201).json({
+      status: true,
+      data: newColorModular,
+      err: {},
+    });
   } catch (error) {
-    res.status(500).json({ status: false, data: {}, err: error.message });
+    res.status(500).json({
+      status: false,
+      data: {},
+      err: error.message,
+    });
   }
 };
 

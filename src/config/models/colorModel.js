@@ -5,7 +5,6 @@ const ColorModularSchema = new mongoose.Schema(
     modularType: {
       type: String,
       required: true,
-      unique: true,
     },
     subModules: [
       {
